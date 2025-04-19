@@ -13,11 +13,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/Shared/Files From i.localized/Files/Deakin/SIT771 Object Oriented Development/week 4/4.3/MovingThePlayer/MovingThePlayer.csproj",
+      "projectUniqueName": "/Users/Shared/Files From i.localized/Files/Deakin/SIT771 Object Oriented Development/week 5/5.4c/MovingThePlayer/MovingThePlayer.csproj",
       "projectName": "MovingThePlayer",
-      "projectPath": "/Users/Shared/Files From i.localized/Files/Deakin/SIT771 Object Oriented Development/week 4/4.3/MovingThePlayer/MovingThePlayer.csproj",
+      "projectPath": "/Users/Shared/Files From i.localized/Files/Deakin/SIT771 Object Oriented Development/week 5/5.4c/MovingThePlayer/MovingThePlayer.csproj",
       "packagesPath": "/Users/hashe/.nuget/packages/",
-      "outputPath": "/Users/Shared/Files From i.localized/Files/Deakin/SIT771 Object Oriented Development/week 4/4.3/MovingThePlayer/obj/",
+      "outputPath": "/Users/Shared/Files From i.localized/Files/Deakin/SIT771 Object Oriented Development/week 5/5.4c/MovingThePlayer/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "/Users/hashe/.nuget/NuGet/NuGet.Config"

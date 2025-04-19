@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("MovingThePlayer")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+c6384d62ba2aee23fe7c881a7443aba85ce0fe79")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+1036d625c2d19b88be31f2aaf3a41dd8143429e5")]
 [assembly: System.Reflection.AssemblyProductAttribute("MovingThePlayer")]
 [assembly: System.Reflection.AssemblyTitleAttribute("MovingThePlayer")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
