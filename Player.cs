@@ -81,5 +81,10 @@ namespace MovingThePlayer
                 Y = gameWindow.Height - Height - GAP;
             }
         }
+
+        public bool CollidedWith(Robot other)
+        {
+            return _playerBitmap.CircleCollision(X, Y, other.CollisionCircle);
+        }
     }
 }

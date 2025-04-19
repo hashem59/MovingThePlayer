@@ -7,18 +7,18 @@ namespace MovingThePlayer
     {
         public static void Main()
         {
-            Window gameWindow = new Window("Moving The Player", 800, 600);
-            Player player = new Player(gameWindow);
+            Window gameWindow = new Window("Robot Dodge", 800, 600);
+            RobotDodge game = new RobotDodge(gameWindow);
 
-            while (!player.Quit && !gameWindow.CloseRequested)
+            while (!game.Quit && !gameWindow.CloseRequested)
             {
                 SplashKit.ProcessEvents();
-                player.HandleInput();
-                player.StayOnWindow(gameWindow);
-                gameWindow.Clear(Color.White);
-                player.Draw();
-                gameWindow.Refresh(60);
+                game.HandleInput();
+                game.Update();
+                game.Draw();
             }
+
+            gameWindow.Close();
         }
     }
 }
