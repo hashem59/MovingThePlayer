@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "/Users/Shared/Files From i.localized/Files/Deakin/SIT771 Object Oriented Development/week 3/3.2p/MovingThePlayer/MovingThePlayer.csproj": {}
+    "/Users/Shared/Files From i.localized/Files/Deakin/SIT771 Object Oriented Development/week 3/3.3c/MovingThePlayer/MovingThePlayer.csproj": {}
   },
   "projects": {
-    "/Users/Shared/Files From i.localized/Files/Deakin/SIT771 Object Oriented Development/week 3/3.2p/MovingThePlayer/MovingThePlayer.csproj": {
+    "/Users/Shared/Files From i.localized/Files/Deakin/SIT771 Object Oriented Development/week 3/3.3c/MovingThePlayer/MovingThePlayer.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/Shared/Files From i.localized/Files/Deakin/SIT771 Object Oriented Development/week 3/3.2p/MovingThePlayer/MovingThePlayer.csproj",
+        "projectUniqueName": "/Users/Shared/Files From i.localized/Files/Deakin/SIT771 Object Oriented Development/week 3/3.3c/MovingThePlayer/MovingThePlayer.csproj",
         "projectName": "MovingThePlayer",
-        "projectPath": "/Users/Shared/Files From i.localized/Files/Deakin/SIT771 Object Oriented Development/week 3/3.2p/MovingThePlayer/MovingThePlayer.csproj",
+        "projectPath": "/Users/Shared/Files From i.localized/Files/Deakin/SIT771 Object Oriented Development/week 3/3.3c/MovingThePlayer/MovingThePlayer.csproj",
         "packagesPath": "/Users/hashe/.nuget/packages/",
-        "outputPath": "/Users/Shared/Files From i.localized/Files/Deakin/SIT771 Object Oriented Development/week 3/3.2p/MovingThePlayer/obj/",
+        "outputPath": "/Users/Shared/Files From i.localized/Files/Deakin/SIT771 Object Oriented Development/week 3/3.3c/MovingThePlayer/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/Users/hashe/.nuget/NuGet/NuGet.Config"
