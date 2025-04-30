@@ -1,86 +1,146 @@
 using System;
+using System.Collections.Generic;
 using SplashKitSDK;
 
 namespace MovingThePlayer
 {
-    public class RobotDodge
+  public class RobotDodge
+  {
+    private Player _player;
+    private Window _gameWindow;
+    private List<Robot> _robots;
+    private List<Bullet> _bullets;
+    private SplashKitSDK.Timer _gameTimer;
+    private const int SCORE_INTERVAL = 1000; // 1 second in milliseconds
+
+    public bool Quit
     {
-        private Player _Player;
-        private Window _GameWindow;
-        private List<Robot> _Robots;
-        public bool Quit
-        {
-            get
-            {
-                return _Player.Quit;
-            }
-        }
-
-        public RobotDodge(Window gameWindow)
-        {
-            _GameWindow = gameWindow;
-            _Player = new Player(_GameWindow);
-            _Robots = new List<Robot>();
-        }
-
-        public void HandleInput()
-        {
-            _Player.HandleInput();
-            _Player.StayOnWindow(_GameWindow);
-        }
-
-        public void Draw()
-        {
-            _GameWindow.Clear(Color.White);
-            foreach (Robot robot in _Robots)
-            {
-                robot.Draw();
-            }
-            _Player.Draw();
-            _GameWindow.Refresh(60);
-        }
-
-        private Robot RandomRobot(Player player)
-        {
-            return new Robot(_GameWindow, player);
-        }
-
-        public void Update()
-        {
-            // add a new robot if needed
-            if (_Robots.Count < 3)
-            {
-                _Robots.Add(RandomRobot(_Player));
-            }
-
-            foreach (Robot robot in _Robots)
-            {
-                robot.Update();
-            }
-
-
-
-            CheckCollisions();
-        }
-
-
-        public void CheckCollisions()
-        {
-            // create new list of robots to remove
-            List<Robot> robotsToRemove = new List<Robot>();
-
-            foreach (Robot robot in _Robots)
-            {
-                if (_Player.CollidedWith(robot) || robot.IsOffscreen(_GameWindow))
-                {
-                    robotsToRemove.Add(robot);
-                }
-            }
-
-            foreach (Robot robot in robotsToRemove)
-            {
-                _Robots.Remove(robot);
-            }
-        }
+      get { return _player.Quit; }
     }
-} 
+
+    public RobotDodge(Window gameWindow)
+    {
+      _gameWindow = gameWindow;
+      _player = new Player(_gameWindow);
+      _robots = new List<Robot>();
+      _bullets = new List<Bullet>();
+      _gameTimer = new SplashKitSDK.Timer("GameTimer");
+      _gameTimer.Start();
+    }
+
+    public void HandleInput()
+    {
+      _player.HandleInput();
+      _player.StayOnWindow(_gameWindow);
+
+      // Handle shooting
+      if (SplashKit.MouseClicked(MouseButton.LeftButton))
+      {
+        _bullets.Add(new Bullet(_player, SplashKit.MousePosition()));
+      }
+    }
+
+    public void Draw()
+    {
+      _gameWindow.Clear(Color.White);
+      foreach (Robot robot in _robots)
+      {
+        robot.Draw();
+      }
+      foreach (Bullet bullet in _bullets)
+      {
+        bullet.Draw();
+      }
+      _player.Draw();
+      _gameWindow.Refresh(60);
+    }
+
+    private Robot RandomRobot()
+    {
+      return new Robot(_gameWindow, _player);
+    }
+
+    public void Update()
+    {
+      // Update score based on time
+      if (_gameTimer.Ticks > SCORE_INTERVAL)
+      {
+        _player.UpdateScore(1);
+        _gameTimer.Reset();
+      }
+
+      // Add new robots if needed
+      if (_robots.Count < 3)
+      {
+        _robots.Add(RandomRobot());
+      }
+
+      // Update robots
+      foreach (Robot robot in _robots)
+      {
+        robot.Update();
+      }
+
+      // Update bullets
+      foreach (Bullet bullet in _bullets.ToArray())
+      {
+        bullet.Update();
+        if (bullet.IsOffscreen(_gameWindow))
+        {
+          _bullets.Remove(bullet);
+        }
+      }
+
+      CheckCollisions();
+    }
+
+    public void CheckCollisions()
+    {
+      List<Robot> robotsToRemove = new List<Robot>();
+      List<Bullet> bulletsToRemove = new List<Bullet>();
+
+      // Check player-robot collisions
+      foreach (Robot robot in _robots)
+      {
+        if (_player.CollidedWith(robot))
+        {
+          _player.LoseLife();
+          robotsToRemove.Add(robot);
+        }
+      }
+
+      // Check bullet-robot collisions
+      foreach (Bullet bullet in _bullets)
+      {
+        foreach (Robot robot in _robots)
+        {
+          if (bullet.CollidedWith(robot))
+          {
+            robotsToRemove.Add(robot);
+            bulletsToRemove.Add(bullet);
+            break;
+          }
+        }
+      }
+
+      // Remove collided robots and bullets
+      foreach (Robot robot in robotsToRemove)
+      {
+        _robots.Remove(robot);
+      }
+      foreach (Bullet bullet in bulletsToRemove)
+      {
+        _bullets.Remove(bullet);
+      }
+
+      // Remove offscreen robots
+      foreach (Robot robot in _robots.ToArray())
+      {
+        if (robot.IsOffscreen(_gameWindow))
+        {
+          _robots.Remove(robot);
+        }
+      }
+    }
+  }
+}

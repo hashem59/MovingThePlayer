@@ -1,0 +1,66 @@
+# Build output
+bin/
+obj/
+
+# Visual Studio files
+.vs/
+*.user
+*.userosscache
+*.suo
+*.userprefs
+
+# SplashKit specific
+*.bmp
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.wav
+*.ogg
+*.mp3
+*.mod
+*.flac
+*.db
+*.sqlite
+
+# macOS specific
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# IDE specific
+.idea/
+*.swp
+*.swo
+
+# Logs
+*.log
+
+# Local development settings
+appsettings.json
+appsettings.*.json
+
+# Compiled source
+*.com
+*.class
+*.dll
+*.exe
+*.o
+*.so
+
+# Packages
+*.7z
+*.dmg
+*.gz
+*.iso
+*.jar
+*.rar
+*.tar
+*.zip
+*.msi
+*.msm
+*.msp
+
+# Visual Studio Code
+.vscode/
+*.code-workspace 
