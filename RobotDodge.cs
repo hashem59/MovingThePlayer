@@ -7,8 +7,7 @@ namespace MovingThePlayer
     {
         private Player _Player;
         private Window _GameWindow;
-        private Robot _TestRobot;
-
+        private List<Robot> _Robots;
         public bool Quit
         {
             get
@@ -21,7 +20,7 @@ namespace MovingThePlayer
         {
             _GameWindow = gameWindow;
             _Player = new Player(_GameWindow);
-            _TestRobot = RandomRobot();
+            _Robots = new List<Robot>();
         }
 
         public void HandleInput()
@@ -33,21 +32,54 @@ namespace MovingThePlayer
         public void Draw()
         {
             _GameWindow.Clear(Color.White);
-            _TestRobot.Draw();
+            foreach (Robot robot in _Robots)
+            {
+                robot.Draw();
+            }
             _Player.Draw();
             _GameWindow.Refresh(60);
         }
 
-        private Robot RandomRobot()
+        private Robot RandomRobot(Player player)
         {
-            return new Robot(_GameWindow);
+            return new Robot(_GameWindow, player);
         }
 
         public void Update()
         {
-            if (_Player.CollidedWith(_TestRobot))
+            // add a new robot if needed
+            if (_Robots.Count < 3)
             {
-                _TestRobot = RandomRobot();
+                _Robots.Add(RandomRobot(_Player));
+            }
+
+            foreach (Robot robot in _Robots)
+            {
+                robot.Update();
+            }
+
+
+
+            CheckCollisions();
+        }
+
+
+        public void CheckCollisions()
+        {
+            // create new list of robots to remove
+            List<Robot> robotsToRemove = new List<Robot>();
+
+            foreach (Robot robot in _Robots)
+            {
+                if (_Player.CollidedWith(robot) || robot.IsOffscreen(_GameWindow))
+                {
+                    robotsToRemove.Add(robot);
+                }
+            }
+
+            foreach (Robot robot in robotsToRemove)
+            {
+                _Robots.Remove(robot);
             }
         }
     }
