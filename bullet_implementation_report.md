@@ -1,64 +1,40 @@
-# Technical Report: Bullet Implementation in Robot Dodge
+# Bullet Implementation Report
 
-## Bullet Modeling and Physics
+## 1. Modeling Bullets
 
-The bullet system is implemented as a separate `Bullet` class that encapsulates all bullet-related functionality. Each bullet is modeled with the following properties:
+Bullets are represented by the `Bullet` class in `Bullet.cs`. Each instance encapsulates:
 
-- Position (`_x`, `_y`): Tracks the bullet's current location
-- Velocity (`_velocity`): A Vector2D that determines the bullet's movement direction and speed
-- Constants:
-  - `SPEED`: 8.0 units per update
-  - `RADIUS`: 5 pixels for collision detection
+- **Position (`_x`, `_y`)**: stored as doubles, initialized to the player's center point at the moment of firing.
+- **Velocity (`_velocity`)**: a unit direction vector (from player to mouse target) scaled by a constant speed (`SPEED = 8.0`).
+- **Visual (`_bulletBitmap`)**: a bitmap loaded once per instance for rendering.
 
-## Bullet Creation and Initialization
+Construction takes two parameters (`Player player`, `Point2D target`), computes a normalized direction vector from the player's current position to the mouse click target, then multiplies by `SPEED` to set `_velocity`.
 
-Bullets are created in response to player input (left mouse click) in the `RobotDodge.HandleInput()` method. The creation process involves:
+## 2. Movement Mechanics
 
-1. Spawning from the player's center position
-2. Calculating initial velocity based on the mouse click position
-3. Using vector mathematics to determine direction:
-   - Creates a unit vector from player to target
-   - Multiplies by constant speed to set velocity
+Movement is handled entirely in `Bullet.Update()`, which advances the bullet by adding `(_velocity.X, _velocity.Y)` to its `(X, Y)` each frame.  
 
-## Movement System
+Off‐screen bullets are detected via `Bullet.IsOffscreen(Window)`, which checks whether the bullet's center has moved beyond the window bounds plus its radius. When off‐screen, the bullet is removed from the active list in the main loop.
 
-The bullet movement system is implemented through:
+## 3. Rendering Orientation
 
-1. A velocity-based update system in `Bullet.Update()`
-2. Position updates using simple vector addition: `_x += _velocity.X; _y += _velocity.Y`
-3. Automatic cleanup when bullets go offscreen (implemented in `RobotDodge.Update()`)
+In `Bullet.Draw()`, the current velocity direction is converted into an angle (degrees) via `SplashKit.VectorAngle(_velocity)`. The bitmap is then drawn at `(X – Width/2, Y – Height/2)` rotated to face the direction of movement, ensuring the sprite visually aligns with its trajectory.
 
-## Collision Detection and Robot Destruction
+Internally, `VectorAngle` uses `atan2(velocity.Y, velocity.X)` to compute the rotation in degrees from the positive X‐axis, and this angle is passed to `OptionRotateBmp(angle)` to rotate the bullet sprite about its center.
 
-The collision system uses circle-based collision detection:
+## 4. Collision Detection & Robot Destruction
 
-1. Each bullet has a circular collision area defined by its position and radius
-2. Robots have their own collision circle (20-pixel radius centered on their position)
-3. Collision detection is handled by `Bullet.CollidedWith(Robot robot)` using SplashKit's `CirclesIntersect` function
+- **Detection**: `Bullet.CollidedWith(Robot robot)` calls `SplashKit.CirclesIntersect` on two circles: one centered at the bullet's `(X, Y)` with radius `_bulletBitmap.Width/2`, and the robot's `CollisionCircle`, which has a fixed radius of 20 (as defined in `Robot.CollisionCircle`).  
 
-The destruction process is managed by the `RobotDodge` class:
+- **Resolution**: In `RobotDodge.CheckCollisions()`, bullet-robot collision pairs are collected and both objects are flagged for removal.  
 
-1. Maintains lists of active bullets and robots
-2. Checks for collisions between all bullets and robots
-3. When a collision is detected:
-   - Both the bullet and robot are marked for removal
-   - They are removed from their respective lists in the next update cycle
+- **Removal**: After detection, the main update loop removes any collided bullets and robots from their respective lists, ensuring they no longer participate in subsequent updates or rendering.
 
-## Memory Management
+## 5. Integration & Lifecycle Management
 
-The system implements efficient memory management:
+To incorporate bullets into the existing architecture:
 
-1. Bullets are automatically removed when they go offscreen
-2. Collided bullets and robots are removed from their respective lists
-3. Uses `List<T>.ToArray()` when iterating over collections that will be modified during iteration to prevent collection modification errors
-
-## Integration with Game Loop
-
-The bullet system is fully integrated into the game's main loop:
-
-1. Input handling for bullet creation
-2. Position updates during the update phase
-3. Collision detection and resolution
-4. Rendering of active bullets
-
-This implementation provides a robust and efficient bullet system that integrates well with the existing game architecture while maintaining clean separation of concerns. 
+- **Input Handling**: In `RobotDodge.HandleInput()`, a new `Bullet` is created on left‐mouse click and added to `_bullets`.
+- **Draw Loop**: Bullets are drawn between robots and the player in `RobotDodge.Draw()`.
+- **Update Loop**: Bullets are advanced and pruned for off‐screen removal in `RobotDodge.Update()` alongside robot updates.
+- **Collision Orchestration**: Centralized in `RobotDodge.CheckCollisions()`, maintaining separation of concerns.

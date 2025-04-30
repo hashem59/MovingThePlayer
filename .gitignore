@@ -11,9 +11,6 @@ obj/
 
 # SplashKit specific
 *.bmp
-*.png
-*.jpg
-*.jpeg
 *.gif
 *.wav
 *.ogg

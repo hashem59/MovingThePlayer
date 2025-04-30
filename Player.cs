@@ -97,7 +97,7 @@ namespace MovingThePlayer
 
     public void LoseLife()
     {
-      Lives--;
+      //Lives--;
       if (Lives <= 0)
       {
         Quit = true;
