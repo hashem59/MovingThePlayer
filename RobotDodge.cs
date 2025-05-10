@@ -57,7 +57,13 @@ namespace MovingThePlayer
 
     private Robot RandomRobot()
     {
-      return new Robot(_gameWindow, _player);
+      double r = SplashKit.Rnd();
+      if (r < 1.0 / 3.0)
+        return new Boxy(_gameWindow, _player);
+      else if (r < 2.0 / 3.0)
+        return new Roundy(_gameWindow, _player);
+      else
+        return new ZigZaggy(_gameWindow, _player);
     }
 
     public void Update()
